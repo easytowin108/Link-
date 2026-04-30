@@ -222,7 +222,7 @@
                 });
 
                 // Generate Output Link
-                const generatedLink = window.location.origin + window.location.pathname + "?id=" + slug;
+                const generatedLink = window.location.origin + window.location.pathname + "/" + slug;
                 document.getElementById('finalUrl').innerText = generatedLink;
                 document.getElementById('finalUrl').href = generatedLink;
                 document.getElementById('output-section').style.display = 'block';
