@@ -1,242 +1,226 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Customizer Pro</title>
+    <title>Link Master Pro | Edit & Track</title>
     <style>
-        :root {
-            --neon-purple: #bc13fe;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --text-color: #ffffff;
-        }
+        :root { --neon: #bc13fe; --bg: #0b0e14; --glass: rgba(255, 255, 255, 0.05); }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: #fff; }
+        
+        .container { max-width: 550px; margin: 0 auto; padding: 20px; }
+        .card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        h2 { color: var(--neon); text-align: center; margin-top: 0; }
+        input { width: 100%; padding: 14px; margin: 10px 0; background: rgba(0,0,0,0.5); border: 1px solid rgba(188, 19, 254, 0.3); border-radius: 12px; color: #fff; box-sizing: border-box; outline: none; }
+        
+        button { width: 100%; padding: 14px; background: var(--neon); border: none; color: #fff; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; margin-top: 5px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(188, 19, 254, 0.4); }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #0f0c29;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        #historyContainer { display: flex; flex-direction: column; gap: 15px; }
+        .history-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: 15px; transition: 0.3s; }
+        
+        .slug-row { display: flex; justify-content: space-between; align-items: center; }
+        .slug-name { font-size: 1.1rem; font-weight: bold; color: #00ffcc; }
+        .click-count { background: #00ffcc; color: #000; padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; }
+        
+        .link-url { font-size: 0.8rem; color: #888; word-break: break-all; margin: 10px 0; display: block; }
+        .time-info { font-size: 0.65rem; color: #555; margin-bottom: 12px; line-height: 1.4; }
+        
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .btn-action { padding: 8px; font-size: 0.75rem; border-radius: 8px; text-align: center; cursor: pointer; border:none; color:white; }
+        .copy-btn { background: #333; }
+        .edit-btn { background: #e67e22; }
+        .del-btn { background: #c0392b; }
 
-        .main-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 8px 32px 0 rgba(188, 19, 254, 0.37);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            color: var(--neon-purple);
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            text-shadow: 0 0 10px rgba(188, 19, 254, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            color: #ccc;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(188, 19, 254, 0.5);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background: var(--neon-purple);
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.4s;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(188, 19, 254, 0.4);
-        }
-
-        button:hover {
-            background: #a306e0;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(188, 19, 254, 0.6);
-        }
-
-        #output-section {
-            margin-top: 30px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            display: none;
-        }
-
-        .short-url {
-            color: #00ffcc;
-            font-weight: bold;
-            word-break: break-all;
-            margin: 10px 0;
-            display: block;
-            text-decoration: none;
-        }
-
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left: 4px solid var(--neon-purple);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="main-card">
-        <div id="creator-ui">
-            <h1>Link Master</h1>
-            <div class="input-group">
-                <label>Paste Original URL</label>
-                <input type="url" id="longUrl" placeholder="https://example.com/very-long-link">
-            </div>
-            <div class="input-group">
-                <label>Custom Slug (Name)</label>
-                <input type="text" id="customSlug" placeholder="my-awesome-link">
-            </div>
-            <button id="createBtn">Save & Generate</button>
-
-            <div id="output-section">
-                <p style="font-size: 0.8rem;">Your Customized Link:</p>
-                <a id="finalUrl" class="short-url" href="#" target="_blank"></a>
-                <button id="copyBtn" style="background: #333; font-size: 0.8rem; padding: 8px;">Copy Link</button>
-            </div>
-        </div>
-
-        <div id="redirect-ui" style="display: none;">
-            <h1>Redirecting</h1>
-            <div class="loader"></div>
-            <p>Please wait while we take you there...</p>
-        </div>
+<div class="container">
+    <div id="login-ui" class="card hidden">
+        <h2>CREATE Username</h2>
+        <input type="text" id="usernameField" placeholder="@your_name">
+        <button onclick="handleLogin()">Login</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    <div id="dashboard-ui" class="hidden">
+        <div class="header">
+            <span id="userTag" style="color:var(--neon); font-weight:bold;"></span>
+            <button onlick="handleLogout()" style="width:auto; padding:5px 12px; background:#222; font-size:0.7rem;">HELLO USERS WELCOME TO RUDRA LINK SHORTENER</button>
+        </div>
 
-        // Your Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyBjv193gNBhYKjXxk9Q4iHXqcVTHeD9IXM",
-            authDomain: "watch-1b375.firebaseapp.com",
-            databaseURL: "https://watch-1b375-default-rtdb.firebaseio.com",
-            projectId: "watch-1b375",
-            storageBucket: "watch-1b375.firebasestorage.app",
-            messagingSenderId: "963767546203",
-            appId: "1:963767546203:web:7788de1edf0a15c5a36a7e",
-            measurementId: "G-DLDJGRBRTW"
-        };
+        <div class="card">
+           <h2 id="formTitle"> Customize your Link </h2>
+            <h2 id="formTitle">RUDRA LINK SHORTENER</h2>
+            <input type="url" id="longUrl" placeholder="Target URL (https://...)">
+            <input type="text" id="customSlug" placeholder="Custom Name (slug)">
+            <button id="mainBtn" onclick="createNewLink()">Create Link</button>
+            <button id="cancelEdit" class="hidden" onclick="resetForm()" style="background:#444;">Cancel Edit</button>
+        </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        <h3 style="margin: 30px 0 15px; border-left: 4px solid var(--neon); padding-left: 10px;">Your Unlimited History</h3>
+        <div id="historyContainer"></div>
+    </div>
 
-        // --- Logic: Handle Redirect ---
-        const urlParams = new URLSearchParams(window.location.search);
-        const linkID = urlParams.get('id');
+    <div id="redirect-ui" class="card hidden" style="text-align:center;">
+        <h2 style="color:#00ffcc;">Redirecting...</h2>
+    </div>
+</div>
 
-        if (linkID) {
-            document.getElementById('creator-ui').style.display = 'none';
-            document.getElementById('redirect-ui').style.display = 'block';
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getDatabase, ref, set, get, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-            const dbRef = ref(db);
-            get(child(dbRef, `links/${linkID}`)).then((snapshot) => {
-                if (snapshot.exists()) {
-                    window.location.replace(snapshot.val().url);
-                } else {
-                    alert("Error: Link not found!");
-                    window.location.href = window.location.origin + window.location.pathname;
-                }
-            }).catch(err => {
-                console.error(err);
-                alert("Database error!");
-            });
-        }
+    const firebaseConfig = {
+        apiKey: "AIzaSyBjv193gNBhYKjXxk9Q4iHXqcVTHeD9IXM",
+        authDomain: "watch-1b375.firebaseapp.com",
+        databaseURL: "https://watch-1b375-default-rtdb.firebaseio.com",
+        projectId: "watch-1b375",
+        storageBucket: "watch-1b375.firebasestorage.app",
+        messagingSenderId: "963767546203",
+        appId: "1:963767546203:web:7788de1edf0a15c5a36a7e"
+    };
 
-        // --- Logic: Create Link ---
-        document.getElementById('createBtn').addEventListener('click', async () => {
-            const longUrl = document.getElementById('longUrl').value.trim();
-            const slug = document.getElementById('customSlug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    let user = localStorage.getItem('active_username');
+    let editingSlug = null; // Track if we are editing
 
-            if (!longUrl || !slug) {
-                alert("Please enter both URL and Slug.");
-                return;
-            }
+    // --- Redirection Logic ---
+    const q = new URLSearchParams(window.location.search);
+    const slugID = q.get('id');
 
-            try {
-                // Save to Firebase
-                await set(ref(db, 'links/' + slug), {
-                    url: longUrl,
-                    date: new Date().toISOString()
-                });
-
-                // Generate Output Link
-                const generatedLink = window.location.origin + window.location.pathname + "/" + slug;
-                document.getElementById('finalUrl').innerText = generatedLink;
-                document.getElementById('finalUrl').href = generatedLink;
-                document.getElementById('output-section').style.display = 'block';
-            } catch (error) {
-                alert("Permission Denied! Check your Firebase Rules.");
-            }
+    if (slugID) {
+        document.getElementById('redirect-ui').classList.remove('hidden');
+        get(ref(db, 'links/' + slugID)).then(async (snap) => {
+            if (snap.exists()) {
+                await update(ref(db, 'links/' + slugID), { clicks: (snap.val().clicks || 0) + 1 });
+                window.location.replace(snap.val().url);
+            } else { alert("Link not valid!"); window.location.href = window.location.pathname; }
         });
+    } else if (!user) {
+        document.getElementById('login-ui').classList.remove('hidden');
+    } else {
+        startApp();
+    }
 
-        // Copy Function
-        document.getElementById('copyBtn').onclick = () => {
-            const linkText = document.getElementById('finalUrl').innerText;
-            navigator.clipboard.writeText(linkText);
-            alert("Link Copied!");
-        };
-    </script>
+    // --- Account Logic ---
+    window.handleLogin = () => {
+        let name = document.getElementById('usernameField').value.trim();
+        if (name.length < 3) return alert("Username too short!");
+        localStorage.setItem('active_username', name.startsWith('@') ? name : '@' + name);
+        location.reload();
+    };
+    window.handleLogout = () => { localStorage.removeItem('active_username'); location.reload(); };
+
+    function startApp() {
+        document.getElementById('dashboard-ui').classList.remove('hidden');
+        document.getElementById('userTag').innerText = user;
+        loadHistory();
+    }
+
+    // --- Create OR Update Link ---
+    window.createNewLink = async () => {
+        const url = document.getElementById('longUrl').value.trim();
+        const slug = document.getElementById('customSlug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+
+        if (!url || !slug) return alert("Both fields are required!");
+
+        try {
+            // Check if slug is taken (only if name changed or new link)
+            if (slug !== editingSlug) {
+                const checkSnap = await get(ref(db, 'links/' + slug));
+                if (checkSnap.exists()) return alert("This custom name is already taken!");
+            }
+
+            const payload = {
+                url: url,
+                owner: user,
+                clicks: 0,
+                created: new Date().toLocaleString(),
+                updated: editingSlug ? new Date().toLocaleString() : "Never"
+            };
+
+            // If editing and slug changed, delete old one
+            if (editingSlug && editingSlug !== slug) {
+                const oldData = await get(ref(db, 'links/' + editingSlug));
+                payload.clicks = oldData.val().clicks || 0; // Carry over clicks
+                payload.created = oldData.val().created;
+                await remove(ref(db, 'links/' + editingSlug));
+            } else if (editingSlug === slug) {
+                const oldData = await get(ref(db, 'links/' + editingSlug));
+                payload.clicks = oldData.val().clicks || 0;
+                payload.created = oldData.val().created;
+            }
+
+            await set(ref(db, 'links/' + slug), payload);
+            alert(editingSlug ? "Link Updated!" : "Link Created!");
+            resetForm();
+        } catch (e) { alert("Database Error!"); }
+    };
+
+    // --- History Loader ---
+    function loadHistory() {
+        onValue(ref(db, 'links'), (snap) => {
+            const data = snap.val();
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+            if (!data) return;
+
+            Object.keys(data).reverse().forEach(id => {
+                if (data[id].owner === user) {
+                    const item = data[id];
+                    const shortUrl = window.location.origin + window.location.pathname + "" + id;
+                    container.innerHTML += `
+                        <div class="history-card">
+                            <div class="slug-row">
+                                <span class="slug-name">/${id}</span>
+                                <span class="click-count">${item.clicks} Clicks</span>
+                            </div>
+                            <span class="link-url">${item.url}</span>
+                            <div class="time-info"><b>Created:</b> ${item.created}<br><b>Edited:</b> ${item.updated}</div>
+                            <div class="action-btns">
+                                <button class="btn-action copy-btn" onclick="copyToClipboard('${shortUrl}')">Copy</button>
+                                <button class="btn-action edit-btn" onclick="startEdit('${id}', '${item.url}')">Edit</button>
+                                <button class="btn-action del-btn" onclick="deleteLink('${id}')">Delete</button>
+                            </div>
+                        </div>`;
+                }
+            });
+        });
+    }
+
+    // --- Action Helpers ---
+    window.startEdit = (id, url) => {
+        editingSlug = id;
+        document.getElementById('longUrl').value = url;
+        document.getElementById('customSlug').value = id;
+        document.getElementById('formTitle').innerText = "Editing Link: /" + id;
+        document.getElementById('mainBtn').innerText = "Update & Save";
+        document.getElementById('cancelEdit').classList.remove('hidden');
+        window.scrollTo(0,0);
+    };
+
+    window.resetForm = () => {
+        editingSlug = null;
+        document.getElementById('longUrl').value = '';
+        document.getElementById('customSlug').value = '';
+        document.getElementById('formTitle').innerText = "Customize New Link";
+        document.getElementById('mainBtn').innerText = "Create Link";
+        document.getElementById('cancelEdit').classList.add('hidden');
+    };
+
+    window.deleteLink = async (id) => {
+        if (confirm("Delete /" + id + "?")) await remove(ref(db, 'links/' + id));
+    };
+
+    window.copyToClipboard = (txt) => {
+        navigator.clipboard.writeText(txt);
+        alert("Copied!");
+    };
+</script>
 </body>
 </html>
